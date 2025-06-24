@@ -1,1 +1,14 @@
-spring.application.name=oauth
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/oauthdb?useSSL=false
+    username: root
+    password: yourpassword
+  jpa:
+    database: MYSQL
+    # InnoDB 설정
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    show_sql : true
