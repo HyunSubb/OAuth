@@ -12,3 +12,8 @@ spring:
     hibernate:
       ddl-auto: create
     show_sql : true
+
+jwt:
+  # secret 키는 32글자 이상의 인코딩된 문자열이어야 한다. oauthserversecretaccesstokenoauthserversecretaccesstokenoauthserversecretaccesstoken
+  secret: b2F1dGhzZXJ2ZXJzZWNyZXRhY2Nlc3N0b2tlbm9hdXRoc2VydmVyc2VjcmV0YWNjZXNzdG9rZW5vYXV0aHNlcnZlcnNlY3JldGFjY2Vzc3Rva2Vu
+  expiration: 3000 # 3000분

@@ -1,5 +1,6 @@
 package com.example.oauth.member.controller;
 
+import com.example.oauth.common.auth.JwtTokenProvider;
 import com.example.oauth.member.domain.Member;
 import com.example.oauth.member.dto.MemberCreateDto;
 import com.example.oauth.member.dto.MemberLoginDto;
@@ -11,13 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, JwtTokenProvider jwtTokenProvider) {
         this.memberService = memberService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     // 회원가입
@@ -34,6 +40,11 @@ public class MemberController {
         Member member = memberService.login(memberLoginDto);
         
         // 일치할 경우 jwt access token 생성
-        return null;
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+
+        Map<String, Object> loginInfo = new HashMap<>();
+        loginInfo.put("id", member.getId());
+        loginInfo.put("token", jwtToken);
+        return new ResponseEntity<>(loginInfo, HttpStatus.OK);
     }
 }
