@@ -25,6 +25,7 @@ public class JwtTokenProvider {
         this.expiration = expiration;
         // 시크릿키는 yml 파일에서 인코딩 된 채로 일단 들어가 있음. 인코딩된 시크릿키를 디코딩 해준 다음 암호화.
         // JWT 세번째 파트 부분에 들어갈 시크릿키를 암호화해주는 코드임.
+        // 암호화를 해주는 이유는 해당 시크릿 키를 사용해서 우리 서버에서 토큰 검증을 하기 때문이다.
         this.SECRET_KEY = new SecretKeySpec(java.util.Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS512.getJcaName());
     }
 

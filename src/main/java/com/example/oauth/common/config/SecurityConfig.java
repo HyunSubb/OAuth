@@ -1,5 +1,6 @@
 package com.example.oauth.common.config;
 
+import com.example.oauth.common.auth.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,6 +18,12 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
+
+    private final JwtTokenFilter jwtTokenFilter;
+
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
     // 패스워드 암호화를 위한 빈을 생성함.
     @Bean
@@ -43,6 +51,14 @@ public class SecurityConfig {
                 // 특정 url 패턴에 대해서는 인증 처리 제외
                 // 인증 처리란 Authentication 객체를 생성하는 것을 말한다.
                 .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin").permitAll().anyRequest().authenticated())
+                // UsernamePasswordAuthenticationFilter 이전에 jwtTokenFilter를 적용하겠다는 의미다.
+                // UsernamePasswordAuthenticationFilter 이 클래스에서는 폼로그인 인증을 처리한다.
+                // 뭔 말이냐면 폼로그인이라고 하는 것은 mvc 패턴에서 사용되는데 기본적으로 스프링에서 자체적으로 로그인 화면을 제공해줌.
+                // 그리고 스프링에서는 기본적으로 폼 로그인 처리를 하려고 한다.
+                // 근데 우리는 그 로그인을 사용하지 않고 우리가 만든 필터에서 토큰을 검증하고 authentication 객체를 생성했음.
+                // 그래서 폼로그인으로 처리하기 전에 해당 필터로 authentication 객체를 만들겠다고 처리하는 거임.
+                // 우리가 만든 필터를 가지고 직접 인증처리 하겠다고 보면 된다.
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
