@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true) // 없는 필드는 자동으로 무시하겠다라는 어노테이션이다.
+// 지금 이 dto에 없는 필드값이 들어올 경우 그 필드는 자동으로 무시하겠다라는 어노테이션이다.
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessTokenDto {
     private String access_token;
     private String expires_in;

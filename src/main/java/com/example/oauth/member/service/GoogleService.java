@@ -50,8 +50,8 @@ public class GoogleService {
                 .retrieve()
                 .toEntity(AccessTokenDto.class);
 
-        System.out.println("응답 JSON 전체: " + response);
-        System.out.println("응답 JSON Body : " + response.getBody().toString());
+        System.out.println("AccessTokenDto 전체: " + response);
+        System.out.println("AccessTokenDto Body : " + response.getBody().toString());
 
         return response.getBody();
     }
@@ -59,6 +59,17 @@ public class GoogleService {
     public GoogleProfileDto getGoogleProfile(String token) {
         System.out.println("Google Access Token : " + token);
 
-        return new GoogleProfileDto();
+        RestClient restClient = RestClient.create();
+
+        ResponseEntity<GoogleProfileDto> response = restClient.get()
+                .uri("https://openidconnect.googleapis.com/v1/userinfo")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .toEntity(GoogleProfileDto.class);
+
+        System.out.println("GoogleProfileDto 전체: " + response);
+        System.out.println("GoogleProfileDto Body : " + response.getBody().toString());
+
+        return response.getBody();
     }
 }

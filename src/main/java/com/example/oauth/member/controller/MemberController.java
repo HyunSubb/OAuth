@@ -63,14 +63,13 @@ public class MemberController {
 
         // 3. 회원가입이 되어있지 않다면 회원 가입
         // 소셜 아이디 값은 구글에서 주는 open id 이다. 로그인을 할 때마다 매번 동일한 값을 발급해줌.
-        // 그래서 우리 서비스에서 회원가입이 되어 있는지 확인을 하려면 googleProfileDto에서 sub(구글에서 id값을 이런 이름을 준다.)
+        // 그래서 우리 서비스에서 회원가입이 되어 있는지 확인을 하려면 googleProfileDto에서 sub(구글에서 id값을 이런 이름으로 준다.)
         // 그 값을 꺼내서 db에 socialId가 저장되어 있는지 확인을 해보면 된다.
         Member originalMember = memberService.getMemberBySocialId(googleProfileDto.getSub());
 
         if(originalMember == null) {
             originalMember = memberService.createOauth(googleProfileDto.getSub(), googleProfileDto.getEmail(), SocialType.GOOGLE);
         }
-
 
         // 4. 회원가입이 되어있다면 우리서버의 JWT토큰 발급해주기
         String jwtToken = jwtTokenProvider.createToken(originalMember.getEmail(), originalMember.getRole().toString());
