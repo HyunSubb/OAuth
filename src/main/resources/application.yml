@@ -17,3 +17,10 @@ jwt:
   # secret 키는 32글자 이상의 인코딩된 문자열이어야 한다. oauthserversecretaccesstokenoauthserversecretaccesstokenoauthserversecretaccesstoken
   secret: b2F1dGhzZXJ2ZXJzZWNyZXRhY2Nlc3N0b2tlbm9hdXRoc2VydmVyc2VjcmV0YWNjZXNzdG9rZW5vYXV0aHNlcnZlcnNlY3JldGFjY2Vzc3Rva2Vu
   expiration: 3000 # 3000분
+
+oauth:
+  google:
+    client-id: 32892685276-9kvlp8e23s5kd84md4unted08fnlpao9.apps.googleusercontent.com
+    client-secret: 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
+    # 이 redirect-uri는 최초에 우리가 설정했던 uri가 어떤 건지를 다시 한번 증명하는 과정임.
+    redirect-uri: http://localhost:3000/oauth/google/redirect

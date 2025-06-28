@@ -50,7 +50,8 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 특정 url 패턴에 대해서는 인증 처리 제외
                 // 인증 처리란 Authentication 객체를 생성하는 것을 말한다.
-                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin", "member/google/doLogin",
+                        "member/kakao/doLogin").permitAll().anyRequest().authenticated())
                 // UsernamePasswordAuthenticationFilter 이전에 jwtTokenFilter를 적용하겠다는 의미다.
                 // UsernamePasswordAuthenticationFilter 이 클래스에서는 폼로그인 인증을 처리한다.
                 // 뭔 말이냐면 폼로그인이라고 하는 것은 mvc 패턴에서 사용되는데 기본적으로 스프링에서 자체적으로 로그인 화면을 제공해줌.
